@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Suketu's Market
+{% endblock %}
+
+{% block content %}
+    <div class="container" style="text-align: center; padding: 3%;">
+        <h1>Suketu's Market</h1>
+        <br>
+        <h3>My first website, built using <a href="https://flask.palletsprojects.com/en/2.0.x/">Flask</a></h3>
+        <br>
+        <a class="btn btn-primary" href="{{ url_for('market_page') }}">Get started purchasing items</a>
+    </div>
+    <div class="container" style="text-align: center;">
+        <h5>(Please don't try to open this website on your phone I haven't tested it there hehe)</h5>
+    </div>
+{% endblock %}
