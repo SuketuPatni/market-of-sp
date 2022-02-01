@@ -1,0 +1,58 @@
+<style>
+    .modal-content-info {
+        background-color: #5e1904;
+    }
+
+    .modal-content-confirm {
+        background-color: rgb(168, 158, 9);
+    }
+</style>
+
+<!-- MoreInfo -->
+<div class="modal fade" id="Modal-MoreInfo-{{ item.id }}" 
+    tabindex="-1" role="dialog" 
+    aria-labelledby="exampleModalLabel" aria-hidden="true">
+
+    <div class="modal-dialog" role="document">
+        <div class="modal-content-info">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">
+                    {{ item.name }}
+                </h5>
+            </div>
+
+            <div class="modal-body">
+                {{ item.description }}
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- PurchaseConfirm -->
+<div class="modal fade" id="Modal-PurchaseConfirm-{{ item.id }}" 
+    tabindex="-1" role="dialog" 
+    aria-labelledby="exampleModalLabel" aria-hidden="true">
+
+    <div class="modal-dialog" role="document">
+        <div class="modal-content-confirm">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">
+                    {{ item.name }}
+                </h5>
+            </div>
+
+            <div class="modal-body">
+                Are you sure you wish to buy {{ item.name }} for ₹ {{ item.price }} ?
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
