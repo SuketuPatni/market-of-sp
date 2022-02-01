@@ -5,6 +5,7 @@
 {% endblock %}
 
 {% block content %}
+
 <div class="row" style="margin: 1%">
     <div class="col-8">
         <h2>Available Items</h2>
@@ -24,15 +25,16 @@
                 <!-- Your rows inside the table HERE: -->
                 <!-- Some jinja syntax for logic-->
                 {% for item in items %}
+                {% include 'includes//items_modals.html' %}
                     <tr>
                         <td>{{ item.id }}</td>
                         <td>{{ item.name }}</td>
                         <td>{{ item.barcode }}</td>
                         <td> ₹ {{ item.price }}</td>
                         <td>
-                            <button class="btn btn-outline btn-info">More info</button>
+                            <button class="btn btn-outline btn-info" data-toggle="modal" data-target="#Modal-MoreInfo-{{ item.id }}">More info</button>
                             &nbsp;
-                            <button class="btn btn-outline btn-success">Buy this</button>
+                            <button class="btn btn-outline btn-success" data-toggle="modal" data-target="#Modal-PurchaseConfirm-{{ item.id }}"> Buy this</button>
                         </td>
                     </tr>
                 {% endfor %}
