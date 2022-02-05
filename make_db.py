@@ -1,7 +1,7 @@
 # run this file
 
 from market import db
-from market.models import Item, User
+from market.models import Item
 
 db.drop_all()
 db.create_all()
@@ -11,6 +11,7 @@ items = [
     {'id': 2, 'name': 'Laptop', 'barcode': '123985473165', 'price': 63000},
     {'id': 3, 'name': 'Keyboard', 'barcode': '231985128446', 'price': 1050}
 ]
+
 for i in items:
     item_temp = Item (
         name = i["name"],
@@ -22,6 +23,7 @@ for i in items:
     db.session.add(item_temp)
 
 db.session.commit()
+
 item4 = Item(
     name = "IPhone 13",
     price = 500,
