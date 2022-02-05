@@ -1,10 +1,9 @@
-from nis import cat
-from flask import redirect, render_template, url_for, flash
+from flask import redirect, render_template, url_for, flash, request
 from market import app
 from market.models import Item, User
-from market.forms import RegisterForm, LoginForm
+from market.forms import RegisterForm, LoginForm, PurchaseItemForm
 from market import db
-from flask_login import login_user, logout_user, login_required
+from flask_login import login_user, logout_user, login_required, current_user
 
 @app.route("/")
 @app.route("/home")
@@ -22,13 +21,36 @@ def home_page():
 #     return f"<h3> About {username} </h3>"
 
 
-@app.route("/market")
+@app.route("/market", methods=["POST", "GET"])
 @login_required
 def market_page():
-    items = Item.query.all()
-    return render_template("market.html", items = items)
-    # the second argument is seen as a placeholder in market.html
-    # that is the data we send to the template
+    purchase_form = PurchaseItemForm()
+
+    if request.method == "POST":
+        purchased_item = request.form.get('purchased_item')
+        purchased_item_object = Item.query.filter_by(name = purchased_item).first()
+
+        if purchased_item_object:
+            if current_user.budget >= purchased_item_object.price:
+                purchased_item_object.owner = current_user.id
+                current_user.budget -= purchased_item_object.price
+
+                db.session.commit()
+
+                flash(f"Congratulations! You have successfully purchased {purchased_item}", category = "success")
+
+            else:
+                flash(f"You don't have enough money to buy {purchased_item}", category="danger")
+
+        return redirect(url_for("market_page"))
+
+    if request.method == "GET":
+
+        # items = Item.query.filter(Item.owner != current_user.id)
+        items = Item.query.filter_by(owner = None)
+        return render_template("market.html", items = items, purchase_form=purchase_form)
+        # the second argument is seen as a placeholder in market.html
+        # that is the data we send to the template
 
 
 @app.route("/register", methods=["POST", "GET"])
