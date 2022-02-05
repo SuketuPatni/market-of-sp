@@ -1,8 +1,7 @@
 from flask import redirect, render_template, url_for, flash, request
-from market import app
+from market import app, db
 from market.models import Item, User
-from market.forms import RegisterForm, LoginForm, PurchaseItemForm
-from market import db
+from market.forms import RegisterForm, LoginForm, PurchaseItemForm, SellItemForm
 from flask_login import login_user, logout_user, login_required, current_user
 
 @app.route("/")
@@ -25,8 +24,10 @@ def home_page():
 @login_required
 def market_page():
     purchase_form = PurchaseItemForm()
+    selling_form = SellItemForm()
 
     if request.method == "POST":
+        # item purchased
         purchased_item = request.form.get('purchased_item')
         purchased_item_object = Item.query.filter_by(name = purchased_item).first()
 
@@ -42,13 +43,33 @@ def market_page():
             else:
                 flash(f"You don't have enough money to buy {purchased_item}", category="danger")
 
+        # item sold
+        sold_item = request.form.get("sold_item")
+        sold_item_object = Item.query.filter_by(name = sold_item).first()
+
+        if sold_item_object:
+            if sold_item_object in current_user.items:
+                sold_item_object.owner = None
+                current_user.budget += sold_item_object.price
+                db.session.commit()
+
+                flash(f"Congratulations! You have successfully sold {sold_item}", category = "success")
+
+            else:
+                flash(f"Something went wrong with selling {sold_item}", category = "danger")
+
+
         return redirect(url_for("market_page"))
 
     if request.method == "GET":
 
         # items = Item.query.filter(Item.owner != current_user.id)
         items = Item.query.filter_by(owner = None)
-        return render_template("market.html", items = items, purchase_form=purchase_form)
+
+        owned_items = Item.query.filter_by(owner = current_user.id)
+        return render_template(
+            "market.html", items = items, purchase_form=purchase_form,
+            owned_items=owned_items, selling_form = selling_form)
         # the second argument is seen as a placeholder in market.html
         # that is the data we send to the template
 

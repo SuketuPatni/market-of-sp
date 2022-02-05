@@ -1,0 +1,38 @@
+<style>
+    .modal-content {
+        background-color: #5e1904;
+    }
+</style>
+
+<!-- SellingConfirm -->
+<div class="modal fade" id="Modal-SellingConfirm-{{ owned_item.id }}" 
+    tabindex="-1"
+    aria-labelledby="exampleModalLabel" aria-hidden="true">
+
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="ModalLabel">
+                    {{ owned_item.name }}
+                </h5>
+            </div>
+
+            <div class="modal-body" style="text-align: center;">
+                <form method="post">
+                    {{ selling_form.hidden_tag() }}
+
+                    <h4>Are you sure you wish to sell {{ owned_item.name }} <br> for ₹ {{ owned_item.price }} ?</h4>
+                    
+                    <!--The following input is consumed in the backend-->
+                    <input id="sold_item" name="sold_item" type="hidden" value="{{ owned_item.name }}">
+                    
+                    {{ selling_form.submit(class = "btn btn-outline-danger btn-block btn-dark") }}
+                </form>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>

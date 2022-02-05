@@ -3,13 +3,16 @@
 from market import db
 from market.models import Item
 
-db.drop_all()
 db.create_all()
 
+Item.__table__.drop(db.engine)
+Item.__table__.create(db.engine)
+# db.create_all()
+
 items = [
-    {'id': 1, 'name': 'Phone', 'barcode': '893212299897', 'price': 35000},
-    {'id': 2, 'name': 'Laptop', 'barcode': '123985473165', 'price': 63000},
-    {'id': 3, 'name': 'Keyboard', 'barcode': '231985128446', 'price': 1050}
+    {'id': 1, 'name': 'Phone', 'barcode': '893212299897', 'price': 10000},
+    {'id': 2, 'name': 'Laptop', 'barcode': '123985473165', 'price': 70000},
+    {'id': 3, 'name': 'Keyboard', 'barcode': '231985128446', 'price': 1250}
 ]
 
 for i in items:
@@ -26,14 +29,14 @@ db.session.commit()
 
 item4 = Item(
     name = "IPhone 13",
-    price = 500,
+    price = 90000,
     barcode = "123456789012",
     description = "desc"
 )
 
 item5 = Item(
     name = "IPad",
-    price = 700,
+    price = 30000,
     barcode = "678593002580",
     description = "desc2"
 )

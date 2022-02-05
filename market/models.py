@@ -13,7 +13,7 @@ class User(db.Model, UserMixin):
     email_address = db.Column(db.String(length = 50), nullable = False, unique = True)
     # Flask's default hash algorithm returns 60 character string
     password_hash = db.Column(db.String(length=40), nullable = False)
-    budget = db.Column(db.Integer(), nullable = False, default = 105000)
+    budget = db.Column(db.Integer(), nullable = False, default = 100000)
     items = db.relationship("Item", backref = "owned_user", lazy = True)
 
     # password hashing and stuff
